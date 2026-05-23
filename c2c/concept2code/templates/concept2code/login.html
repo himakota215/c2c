@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+</head>
+<body>
+
+  <h2>Login</h2>
+
+  <input id="username" placeholder="Username"><br><br>
+  <input id="password" type="password" placeholder="Password"><br><br>
+
+  <button onclick="login()">Login</button>
+
+  <p id="msg"></p>
+  <p>
+  New user?
+  <a href="/register/">Register here</a>
+</p>
+
+  <script>
+    function login() {
+      fetch('/api/login/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          username: document.getElementById('username').value,
+          password: document.getElementById('password').value
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message) {
+          window.location.href = '/dashboard/';
+        } else {
+          document.getElementById('msg').innerText = data.error;
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
